@@ -15,6 +15,12 @@ import (
 	"os"
 )
 
+func Usage() {
+	fmt.Fprintf(os.Stderr, "usage: crawl http://example.com/path/file.html\n")
+	flag.PrintDefaults()
+	os.Exit(2)
+}
+
 func retrieve(uri string) (string, error) {
 
 	resp, err := http.Get(uri)
@@ -35,8 +41,7 @@ func main() {
 	args := flag.Args()
 
 	if len(args) < 1 {
-		fmt.Println("Please specify start page")
-		os.Exit(1)
+		Usage()
 	}
 
 	data, _ := retrieve(args[0])
