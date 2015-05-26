@@ -29,7 +29,10 @@ func retrieve(uri string) (string, error) {
 	}
 
 	defer resp.Body.Close()
-	body, _ := ioutil.ReadAll(resp.Body)
+	body, err2 := ioutil.ReadAll(resp.Body)
+	if err2 != nil {
+		return "", err2
+	}
 
 	return string(body), nil
 
@@ -44,8 +47,9 @@ func main() {
 		Usage()
 	}
 
-	data, _ := retrieve(args[0])
-
-	fmt.Println(data)
+	data, err := retrieve(args[0])
+	if err == nil {
+		fmt.Println(data)
+	}
 
 }
