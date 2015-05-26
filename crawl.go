@@ -39,6 +39,8 @@ func main() {
 		os.Exit(1)
 	}
 
-	retrieve(args[0])
+	data, _ := retrieve(args[0])
+
+	fmt.Println(data)
 
 }
