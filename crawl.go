@@ -15,17 +15,17 @@ import (
 	"os"
 )
 
-func retrieve(uri string) {
+func retrieve(uri string) (string, error) {
 
 	resp, err := http.Get(uri)
 	if err != nil {
-		return
+		return "", err
 	}
 
 	defer resp.Body.Close()
 	body, _ := ioutil.ReadAll(resp.Body)
 
-	fmt.Println(string(body))
+	return string(body), nil
 
 }
 
