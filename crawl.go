@@ -8,9 +8,14 @@
 package main
 
 import (
+	"flag"
 	"fmt"
+	"os"
 )
 
 func main() {
+
+    flag.Parse()
+    args := flag.Args()
 
 }
