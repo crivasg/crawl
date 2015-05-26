@@ -48,8 +48,10 @@ func main() {
 	}
 
 	data, err := retrieve(args[0])
-	if err == nil {
-		fmt.Println(data)
+	if err != nil {
+	    fmt.Fprintf(os.Stderr, "Error retrieving the data from %s\n", args[0])
+	    os.Exit(1)
 	}
+	fmt.Println(data)
 
 }
