@@ -39,4 +39,6 @@ func main() {
 		os.Exit(1)
 	}
 
+	retrieve(args[0])
+
 }
