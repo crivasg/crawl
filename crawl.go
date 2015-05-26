@@ -18,6 +18,14 @@ import (
 func retrieve(uri string) {
 
 	resp, err := http.Get(uri)
+	if err != nil {
+		return
+	}
+
+	defer resp.Body.Close()
+	body, _ := ioutil.ReadAll(resp.Body)
+
+	fmt.Println(string(body))
 
 }
 
