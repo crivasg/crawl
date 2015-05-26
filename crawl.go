@@ -10,8 +10,16 @@ package main
 import (
 	"flag"
 	"fmt"
+	"io/ioutil" // 'ioutil' will help us print pages to the screen
+	"net/http"
 	"os"
 )
+
+func retrieve(uri string) {
+
+	resp, err := http.Get(uri)
+
+}
 
 func main() {
 
