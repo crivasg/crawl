@@ -21,7 +21,7 @@ func Usage() {
 	os.Exit(2)
 }
 
-func retrieve(uri string) (string, error) {
+func RetrieveDataFrom(uri string) (string, error) {
 
 	resp, err := http.Get(uri)
 	if err != nil {
@@ -47,7 +47,7 @@ func main() {
 		Usage()
 	}
 
-	data, err := retrieve(args[0])
+	data, err := RetrieveDataFrom(args[0])
 	if err != nil {
 	    fmt.Fprintf(os.Stderr, "Error retrieving the data from %s\n", args[0])
 	    os.Exit(1)
