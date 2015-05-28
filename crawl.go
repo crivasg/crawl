@@ -10,7 +10,8 @@ package main
 import (
 	"flag"
 	"fmt"
-	"io/ioutil" // 'ioutil' will help us print pages to the screen
+	"io"
+	//"io/ioutil" // 'ioutil' will help us print pages to the screen
 	"net/http"
 	"os"
 )
@@ -21,20 +22,21 @@ func Usage() {
 	os.Exit(2)
 }
 
-func RetrieveDataFrom(uri string) (string, error) {
+func CollectLinks(httpBody io.Reader) []string {
+
+	return nil
+}
+
+func RetrieveDataFrom(uri string) (io.Reader, error) {
 
 	resp, err := http.Get(uri)
 	if err != nil {
-		return "", err
+		return nil, err
 	}
 
 	defer resp.Body.Close()
-	body, err2 := ioutil.ReadAll(resp.Body)
-	if err2 != nil {
-		return "", err2
-	}
 
-	return string(body), nil
+	return resp.Body, nil
 
 }
 
@@ -49,9 +51,15 @@ func main() {
 
 	data, err := RetrieveDataFrom(args[0])
 	if err != nil {
-	    fmt.Fprintf(os.Stderr, "Error retrieving the data from %s\n", args[0])
-	    os.Exit(1)
+		fmt.Fprintf(os.Stderr, "Error retrieving the data from %s\n", args[0])
+		os.Exit(1)
 	}
 	fmt.Println(data)
+
+	links := CollectLinks(data)
+
+	for _, link := range links { // 'for' + 'range' in Go is like .each in Ruby or
+		fmt.Println(link) // an iterator in many other languages.
+	}
 
 }
