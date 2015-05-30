@@ -65,15 +65,24 @@ func main() {
 	if len(args) < 1 {
 		Usage()
 	}
+	/*
+		data, err := RetrieveDataFrom(args[0])
+		if err != nil {
+			fmt.Fprintf(os.Stderr, "Error retrieving the data from %s\n", args[0])
+			os.Exit(1)
+		}
+		fmt.Println(data)
 
-	data, err := RetrieveDataFrom(args[0])
+	*/
+
+	resp, err := http.Get(args[0])
 	if err != nil {
-		fmt.Fprintf(os.Stderr, "Error retrieving the data from %s\n", args[0])
-		os.Exit(1)
+		os.Exit(2)
 	}
-	fmt.Println(data)
 
-	links := CollectLinks(data)
+	defer resp.Body.Close()
+
+	links := CollectLinks(resp.Body)
 
 	for _, link := range links { // 'for' + 'range' in Go is like .each in Ruby or
 		fmt.Println(string(link)) // an iterator in many other languages.
