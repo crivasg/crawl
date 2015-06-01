@@ -1,7 +1,12 @@
 /*
+   Build a Web Crawler in Go
    https://jdanger.com/build-a-web-crawler-in-go.html
 
-   Build a Web Crawler in Go
+   A Simple Web Scraper in Go
+   http://schier.co/blog/2015/04/26/a-simple-web-scraper-in-go.html
+
+   Go web page scraper
+   http://www.reddit.com/r/golang/comments/37jvaz/go_web_page_scraper/
 
 */
 
