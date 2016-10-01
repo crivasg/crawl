@@ -79,17 +79,16 @@ func CollectLinks2(httpBody io.Reader) []string {
 				match, _ := regexp.MatchString("embed_audio_buttons", token.Data)
 				if match == true {
 					//fmt.Printf("%s\n", strings.Trim(token.Data, "\t\n "))
-					fmt.Println(r.FindString(strings.Trim(token.Data, "\t\n ")))
+					link := r.FindString(strings.Trim(token.Data, "\t\n "))
+					link = strings.Replace(link, "\"", "", -1)
+					//fmt.Printf("-> %s\n",link)
+					links = append(links, link)
 				}
 			}
 		case html.EndTagToken: // </tag>
-		    /*
-			if script_token == 1 {
-				fmt.Printf("----------------------------------------------------------\n")
-			}
-			*/
 			script_token = 0
 		case html.SelfClosingTagToken: // <tag/>
+			script_token = 0
 		}
 	}
 
