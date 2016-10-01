@@ -13,6 +13,7 @@
 package main
 
 import (
+	"encoding/json"
 	"flag"
 	"fmt"
 	"io"
@@ -23,6 +24,31 @@ import (
 	"regexp"
 	"strings"
 )
+
+type Program struct {
+	Type      string
+	Full      []string
+	Segments  []string
+	AudioData []AudioData
+}
+
+type AudioData struct {
+	Uid         string
+	Available   string
+	Duration    Int
+	Title       string
+	AudioUrl    string
+	StoryUrl    string
+	Slug        string
+	Program     string
+	Affiliation string
+	Song        string
+	Artist      string
+	Album       string
+	Track       Int
+	Type        string
+	Subtype     string
+}
 
 func Usage() {
 	fmt.Fprintf(os.Stderr, "usage: crawl http://example.com/path/file.html\n")
