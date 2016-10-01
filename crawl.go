@@ -16,9 +16,9 @@ import (
 	"encoding/json"
 	"flag"
 	"fmt"
-	"io"
-	//"io/ioutil" // 'ioutil' will help us print pages to the screen
 	"golang.org/x/net/html"
+	"io"
+	"io/ioutil" // 'ioutil' will help us print pages to the screen
 	"net/http"
 	"os"
 	"regexp"
