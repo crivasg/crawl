@@ -51,7 +51,7 @@ func CollectLinks(httpBody io.Reader) []string {
 
 }
 
-func CollectLinks2(httpBody io.Reader) []string {
+func CollectLinksRadiolab(httpBody io.Reader) []string {
 	// http://golang-examples.tumblr.com/post/47426518779/parse-html
 
 	r, _ := regexp.Compile("\"http(s://|://).*mp3\"")
@@ -132,7 +132,7 @@ func main() {
 
 	defer resp.Body.Close()
 
-	links := CollectLinks2(resp.Body)
+	links := CollectLinksRadiolab(resp.Body)
 
 	for _, link := range links { // 'for' + 'range' in Go is like .each in Ruby or
 		fmt.Println(string(link)) // an iterator in many other languages.
