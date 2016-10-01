@@ -49,6 +49,31 @@ func CollectLinks(httpBody io.Reader) []string {
 
 }
 
+func CollectLinks2(httpBody io.Reader) []string {
+	// http://golang-examples.tumblr.com/post/47426518779/parse-html
+
+	links := make([]string, 0)
+	page := html.NewTokenizer(httpBody)
+	for {
+		tokenType := page.Next()
+		if tokenType == html.ErrorToken {
+			return links
+		}
+		token := page.Token()
+
+		if tokenType == html.StartTagToken && token.DataAtom.String() == "script" {
+			fmt.Printf("token = %v\n", token.Data)
+			for _, attr := range token.Attr {
+				fmt.Printf("\tattr = %v\n", attr)
+				if attr.Key == "href" {
+					links = append(links, attr.Val)
+				}
+			}
+		}
+	}
+
+}
+
 func RetrieveDataFrom(uri string) (io.Reader, error) {
 
 	resp, err := http.Get(uri)
@@ -87,7 +112,7 @@ func main() {
 
 	defer resp.Body.Close()
 
-	links := CollectLinks(resp.Body)
+	links := CollectLinks2(resp.Body)
 
 	for _, link := range links { // 'for' + 'range' in Go is like .each in Ruby or
 		fmt.Println(string(link)) // an iterator in many other languages.
