@@ -68,13 +68,16 @@ func CollectLinks2(httpBody io.Reader) []string {
 		switch tokenType {
 		case html.StartTagToken: // <tag>
 			if token.DataAtom.String() == "script" {
-				fmt.Printf("script = %v\n", token)
+				//fmt.Printf("script = %v\n", token)
 				script_token = 1
 				continue
 			}
 		case html.TextToken: // text between start and end tag
 			if script_token == 1 {
-				fmt.Printf("\tattr = %v\n", token)
+				match, _ := regexp.MatchString("embed_audio_buttons", token.Data)
+				if match == true {
+					fmt.Printf("%s\n", strings.Trim(token.Data, "\t\n "))
+				}
 			}
 		case html.EndTagToken: // </tag>
 			if script_token == 1 {
