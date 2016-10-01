@@ -51,6 +51,44 @@ func CollectLinks(httpBody io.Reader) []string {
 
 }
 
+func CollectLinksATC(httpBody io.Reader) []string {
+	// ATC == All things considered
+
+	full_show_token := false
+
+	links := make([]string, 0)
+	page := html.NewTokenizer(httpBody)
+	for {
+		tokenType := page.Next()
+
+		if tokenType == html.ErrorToken {
+			return links
+		}
+		token := page.Token()
+
+		switch tokenType {
+		case html.StartTagToken: // <tag>
+			if token.DataAtom.String() == "div" {
+				for _, attr := range token.Attr {
+					if attr.Key == "id" && attr.Val == "full-show" {
+						full_show_token = true
+					}
+				}
+			}
+			if token.DataAtom.String() == "b" && full_show_token == true {
+				for _, attr := range token.Attr {
+					fmt.Printf("%s\n%s\n", attr.Key, attr.Val)
+				}
+				full_show_token = false
+			}
+		case html.TextToken: // text between start and end tag
+		case html.EndTagToken: // </tag>
+		case html.SelfClosingTagToken: // <tag/>
+		}
+	}
+
+}
+
 func CollectLinksRadiolab(httpBody io.Reader) []string {
 	// http://golang-examples.tumblr.com/post/47426518779/parse-html
 
@@ -132,7 +170,8 @@ func main() {
 
 	defer resp.Body.Close()
 
-	links := CollectLinksRadiolab(resp.Body)
+	//links := CollectLinksRadiolab(resp.Body)
+	links := CollectLinksATC(resp.Body)
 
 	for _, link := range links { // 'for' + 'range' in Go is like .each in Ruby or
 		fmt.Println(string(link)) // an iterator in many other languages.
