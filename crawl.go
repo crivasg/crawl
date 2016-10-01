@@ -54,6 +54,8 @@ func CollectLinks(httpBody io.Reader) []string {
 func CollectLinks2(httpBody io.Reader) []string {
 	// http://golang-examples.tumblr.com/post/47426518779/parse-html
 
+	r, _ := regexp.Compile("\"http(s://|://).*mp3\"")
+
 	links := make([]string, 0)
 	script_token := 0
 	page := html.NewTokenizer(httpBody)
@@ -76,13 +78,16 @@ func CollectLinks2(httpBody io.Reader) []string {
 			if script_token == 1 {
 				match, _ := regexp.MatchString("embed_audio_buttons", token.Data)
 				if match == true {
-					fmt.Printf("%s\n", strings.Trim(token.Data, "\t\n "))
+					//fmt.Printf("%s\n", strings.Trim(token.Data, "\t\n "))
+					fmt.Println(r.FindString(strings.Trim(token.Data, "\t\n ")))
 				}
 			}
 		case html.EndTagToken: // </tag>
+		    /*
 			if script_token == 1 {
 				fmt.Printf("----------------------------------------------------------\n")
 			}
+			*/
 			script_token = 0
 		case html.SelfClosingTagToken: // <tag/>
 		}
