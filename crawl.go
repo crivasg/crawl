@@ -81,18 +81,6 @@ func CollectLinks2(httpBody io.Reader) []string {
 			script_token = 0
 		case html.SelfClosingTagToken: // <tag/>
 		}
-
-		/*
-			if tokenType == html.StartTagToken && token.DataAtom.String() == "script" {
-				fmt.Printf("token = %v\n", token.Data)
-				for _, attr := range token.Attr {
-					fmt.Printf("\tattr = %v\n", attr)
-					if attr.Key == "href" {
-						links = append(links, attr.Val)
-					}
-				}
-			}
-		*/
 	}
 
 }
