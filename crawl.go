@@ -26,28 +26,35 @@ import (
 )
 
 type Program struct {
-	Type      string
-	Full      []string
-	Segments  []string
-	AudioData []AudioData
+	Type      string      `json:"type"`
+	Full      []string    `json:"full"`
+	Segments  []string    `json:"segments"`
+	AudioData []AudioData `json:"audioData"`
 }
 
 type AudioData struct {
-	Uid         string
-	Available   string
-	Duration    Int
-	Title       string
-	AudioUrl    string
-	StoryUrl    string
-	Slug        string
-	Program     string
-	Affiliation string
-	Song        string
-	Artist      string
-	Album       string
-	Track       Int
-	Type        string
-	Subtype     string
+	Uid         string `json:"uid"`
+	Available   bool   `json:"available"`
+	Duration    int    `json:"duration"`
+	Title       string `json:"title"`
+	AudioUrl    string `json:"audioUrl"`
+	StoryUrl    string `json:"storyUrl"`
+	Slug        string `json:"slug"`
+	Program     string `json:"program"`
+	Affiliation string `json:"affiliation"`
+	Song        string `json:"song"`
+	Artist      string `json:"artist"`
+	Album       string `json:"album"`
+	Track       int    `json:"track"`
+	Type        string `json:"type"`
+	Subtype     string `json:"subtype"`
+}
+
+func (i AudioData) String() string {
+
+	return fmt.Sprintf("Title: %s\nURL: %s\nAudio URL: %s", i.Title, i.StoryUrl, i.AudioUrl)
+	//return fmt.Sprintf("%s", i.AudioUrl)
+
 }
 
 func Usage() {
