@@ -20,6 +20,8 @@ import (
 	"golang.org/x/net/html"
 	"net/http"
 	"os"
+	"regexp"
+	"strings"
 )
 
 func Usage() {
