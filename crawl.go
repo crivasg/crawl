@@ -179,7 +179,8 @@ func parseJSON(b string) {
 	}
 
 	for _, episode := range program.AudioData {
-		fmt.Printf("%s\n", episode)
+		cmd, _ := episode.FormatAudioUrl()
+		fmt.Printf("%s\n", cmd)
 	}
 
 }
