@@ -20,6 +20,7 @@ import (
 	"io"
 	"io/ioutil" // 'ioutil' will help us print pages to the screen
 	"net/http"
+	"net/url"
 	"os"
 	"regexp"
 	"strings"
