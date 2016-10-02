@@ -109,8 +109,20 @@ func CollectLinksATC(httpBody io.Reader) []string {
 				}
 			}
 			if token.DataAtom.String() == "b" && full_show_token == true {
+				// class="full-show-unavailable"
 				for _, attr := range token.Attr {
-					fmt.Printf("%s\n%s\n", attr.Key, attr.Val)
+					if attr.Key == "class" && attr.Val == "full-show-unavailable" {
+						fmt.Printf("-------------> %s\n%s\n", attr.Key, attr.Val)
+						full_show_token = false
+					}
+				}
+				if full_show_token == false {
+					return links
+				}
+				for _, attr := range token.Attr {
+					//fmt.Printf("%s\n%s\n", attr.Key, attr.Val)
+					//links = append(links, attr.Val)
+					parseJSON(attr.Val)
 				}
 				full_show_token = false
 			}
@@ -118,6 +130,36 @@ func CollectLinksATC(httpBody io.Reader) []string {
 		case html.EndTagToken: // </tag>
 		case html.SelfClosingTagToken: // <tag/>
 		}
+	}
+
+	program := new(Program)
+	reader := strings.NewReader(strings.Join(links, "\n"))
+
+	err := json.NewDecoder(reader).Decode(program)
+	if err != nil {
+		fmt.Printf("error!!")
+	}
+
+	for _, episode := range program.AudioData {
+		fmt.Printf("%v\n", episode)
+	}
+
+	return links
+
+}
+
+func parseJSON(b string) {
+
+	program := new(Program)
+	reader := strings.NewReader(b)
+
+	err := json.NewDecoder(reader).Decode(program)
+	if err != nil {
+		fmt.Printf("%v\n\n\n", err)
+	}
+
+	for _, episode := range program.AudioData {
+		fmt.Printf("%s\n", episode)
 	}
 
 }
