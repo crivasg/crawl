@@ -58,6 +58,20 @@ func (i AudioData) String() string {
 
 }
 
+func (i AudioData) FormatAudioUrl() (string, error) {
+
+	u, err := url.Parse(i.AudioUrl)
+	if err != nil {
+		return "", err
+	}
+
+	slice1 := strings.Split(u.Path, "/")
+	filename := slice1[len(slice1)-1]
+
+	result := fmt.Sprintf("wget -O %s %s", filename, u.Scheme+"://"+u.Host+u.Path)
+	return result, nil
+}
+
 //----------------------------------------------------------------------------------------
 
 func Usage() {
