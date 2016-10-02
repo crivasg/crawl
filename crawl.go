@@ -57,6 +57,8 @@ func (i AudioData) String() string {
 
 }
 
+//----------------------------------------------------------------------------------------
+
 func Usage() {
 	fmt.Fprintf(os.Stderr, "usage: crawl http://example.com/path/file.html\n")
 	flag.PrintDefaults()
