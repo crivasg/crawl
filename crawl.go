@@ -188,6 +188,14 @@ func parseJSON(b string) {
 		fmt.Printf("%s\n", cmd)
 	}
 
+	basename, _ := program.AudioData[0].Basename()
+	fmt.Printf("\n%v\n", basename)
+
+	for _, episode := range program.AudioData[1:] {
+		basename1, _ := episode.Basename()
+		fmt.Printf("cat %s >> %s\nrm %s\n", basename1, basename, basename1)
+	}
+
 }
 
 func CollectLinksRadiolab(httpBody io.Reader) []string {
