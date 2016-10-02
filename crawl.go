@@ -72,6 +72,26 @@ func (i AudioData) FormatAudioUrl() (string, error) {
 	return result, nil
 }
 
+func (i AudioData) Basename() (string, error) {
+
+	u, err := url.Parse(i.AudioUrl)
+	if err != nil {
+		return "", err
+	}
+
+	slice1 := strings.Split(u.Path, "/")
+	filename := slice1[len(slice1)-1]
+
+	return filename, nil
+
+}
+
+type Enclosure struct {
+	Url    string
+	Length string
+	Type   string
+}
+
 //----------------------------------------------------------------------------------------
 
 func Usage() {
