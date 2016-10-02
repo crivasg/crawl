@@ -149,21 +149,6 @@ func CollectLinksATC(httpBody io.Reader) []string {
 		}
 	}
 
-	/*
-		program := new(Program)
-		reader := strings.NewReader(strings.Join(links, "\n"))
-
-		err := json.NewDecoder(reader).Decode(program)
-		if err != nil {
-			fmt.Printf("error!!")
-		}
-
-		for _, episode := range program.AudioData {
-			fmt.Printf("%v\n", episode)
-		}
-
-	*/
-
 	return links
 
 }
