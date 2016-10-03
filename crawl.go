@@ -98,6 +98,13 @@ type Enclosure struct {
 	Type   string
 }
 
+func (i Enclosure) String() string {
+
+	return fmt.Sprintf("%s\n%s\n%s", i.URL, i.Length, i.Type)
+	//return fmt.Sprintf("%s", i.AudioUrl)
+
+}
+
 //------------------------------FUNCTIONS-------------------------------------------------
 
 func cleanURL(i string) string {
@@ -260,7 +267,7 @@ func CollectLinksRadiolab(httpBody io.Reader) []Enclosure {
 					link := r.FindString(strings.Trim(token.Data, "\t\n "))
 					link = strings.Replace(link, "\"", "", -1)
 					//fmt.Printf("-> %s\n",link)
-					links = append(links, Enclosure{link, 0, "mp3"})
+					links = append(links, Enclosure{link, "0", "mp3"})
 				}
 			}
 		case html.EndTagToken: // </tag>
@@ -332,7 +339,7 @@ func main() {
 
 	defer resp.Body.Close()
 
-	//links := CollectLinksRadiolab(resp.Body)
+	links := CollectLinksRadiolab(resp.Body)
 	//links := CollectLinksATC(resp.Body)
 
 	for _, link := range links { // 'for' + 'range' in Go is like .each in Ruby or
