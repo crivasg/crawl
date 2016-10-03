@@ -348,8 +348,11 @@ func main() {
 	links := CollectLinksRadiolab(resp.Body)
 	//links := CollectLinksATC(resp.Body)
 
+	t := template.New("Item Template").Funcs(funcMap)
+	t, _ = t.Parse(templ)
+
 	for _, link := range links { // 'for' + 'range' in Go is like .each in Ruby or
-		fmt.Println(link) // an iterator in many other languages.
+		t.Execute(os.Stdout, link)
 	}
 
 }
