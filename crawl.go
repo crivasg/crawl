@@ -343,7 +343,7 @@ func main() {
 	//links := CollectLinksATC(resp.Body)
 
 	for _, link := range links { // 'for' + 'range' in Go is like .each in Ruby or
-		fmt.Println(string(link)) // an iterator in many other languages.
+		fmt.Println(link) // an iterator in many other languages.
 	}
 
 }
