@@ -24,9 +24,15 @@ import (
 	"os"
 	"regexp"
 	"strings"
+	"text/template"
 )
 
 //------------------------------TEMPLATES-------------------------------------------------
+
+var funcMap = template.FuncMap{
+	"basenameURL": basenameURL,
+	"cleanURL":    cleanURL,
+}
 
 const templ = `wget -O {{basenameURL .URL}} {{cleanURL .URL}}\n`
 
