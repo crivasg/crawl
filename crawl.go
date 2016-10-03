@@ -26,6 +26,12 @@ import (
 	"strings"
 )
 
+//------------------------------TEMPLATES-------------------------------------------------
+
+
+
+//------------------------------MODELS----------------------------------------------------
+
 type Program struct {
 	Type      string      `json:"type"`
 	Full      []string    `json:"full"`
@@ -92,7 +98,7 @@ type Enclosure struct {
 	Type   string
 }
 
-//----------------------------------------------------------------------------------------
+//------------------------------FUNCTIONS-------------------------------------------------
 
 func Usage() {
 	fmt.Fprintf(os.Stderr, "usage: crawl http://example.com/path/file.html\n")
