@@ -229,12 +229,12 @@ func parseJSON(b string) {
 
 }
 
-func CollectLinksRadiolab(httpBody io.Reader) []string {
+func CollectLinksRadiolab(httpBody io.Reader) []Enclosure {
 	// http://golang-examples.tumblr.com/post/47426518779/parse-html
 
 	r, _ := regexp.Compile("\"http(s://|://).*mp3\"")
 
-	links := make([]string, 0)
+	links := make([]Enclosure, 0)
 	script_token := 0
 	page := html.NewTokenizer(httpBody)
 	for {
@@ -260,7 +260,7 @@ func CollectLinksRadiolab(httpBody io.Reader) []string {
 					link := r.FindString(strings.Trim(token.Data, "\t\n "))
 					link = strings.Replace(link, "\"", "", -1)
 					//fmt.Printf("-> %s\n",link)
-					links = append(links, link)
+					links = append(links, Enclosure{link, 0, "mp3"})
 				}
 			}
 		case html.EndTagToken: // </tag>
@@ -333,7 +333,7 @@ func main() {
 	defer resp.Body.Close()
 
 	//links := CollectLinksRadiolab(resp.Body)
-	links := CollectLinksATC(resp.Body)
+	//links := CollectLinksATC(resp.Body)
 
 	for _, link := range links { // 'for' + 'range' in Go is like .each in Ruby or
 		fmt.Println(string(link)) // an iterator in many other languages.
