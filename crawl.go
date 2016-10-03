@@ -34,7 +34,8 @@ var funcMap = template.FuncMap{
 	"cleanURL":    cleanURL,
 }
 
-const templ = `wget -O {{basenameURL .URL}} {{cleanURL .URL}}\n`
+const templ = `wget -O {{basenameURL .URL}} {{cleanURL .URL}}
+`
 
 //------------------------------MODELS----------------------------------------------------
 
