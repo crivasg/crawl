@@ -28,7 +28,7 @@ import (
 
 //------------------------------TEMPLATES-------------------------------------------------
 
-
+const templ = `wget -O {{basenameURL .URL}} {{cleanURL .URL}}\n`
 
 //------------------------------MODELS----------------------------------------------------
 
@@ -93,12 +93,37 @@ func (i AudioData) Basename() (string, error) {
 }
 
 type Enclosure struct {
-	Url    string
+	URL    string
 	Length string
 	Type   string
 }
 
 //------------------------------FUNCTIONS-------------------------------------------------
+
+func cleanURL(i string) string {
+
+	u, err := url.Parse(i)
+	if err != nil {
+		return ""
+	}
+
+	return u.Scheme + "://" + u.Host + u.Path
+
+}
+
+func basenameURL(i string) string {
+
+	u, err := url.Parse(i)
+	if err != nil {
+		return ""
+	}
+
+	slice1 := strings.Split(u.Path, "/")
+	filename := slice1[len(slice1)-1]
+
+	return filename
+
+}
 
 func Usage() {
 	fmt.Fprintf(os.Stderr, "usage: crawl http://example.com/path/file.html\n")
