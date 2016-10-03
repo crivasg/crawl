@@ -24,11 +24,18 @@ import (
 	"os"
 	"regexp"
 	"strings"
+	"text/template"
 )
 
 //------------------------------TEMPLATES-------------------------------------------------
 
+var funcMap = template.FuncMap{
+	"basenameURL": basenameURL,
+	"cleanURL":    cleanURL,
+}
 
+const templ = `wget -O {{basenameURL .URL}} {{cleanURL .URL}}
+`
 
 //------------------------------MODELS----------------------------------------------------
 
@@ -93,12 +100,44 @@ func (i AudioData) Basename() (string, error) {
 }
 
 type Enclosure struct {
-	Url    string
+	URL    string
 	Length string
 	Type   string
 }
 
+func (i Enclosure) String() string {
+
+	return fmt.Sprintf("%s\n%s\n%s", i.URL, i.Length, i.Type)
+	//return fmt.Sprintf("%s", i.AudioUrl)
+
+}
+
 //------------------------------FUNCTIONS-------------------------------------------------
+
+func cleanURL(i string) string {
+
+	u, err := url.Parse(i)
+	if err != nil {
+		return ""
+	}
+
+	return u.Scheme + "://" + u.Host + u.Path
+
+}
+
+func basenameURL(i string) string {
+
+	u, err := url.Parse(i)
+	if err != nil {
+		return ""
+	}
+
+	slice1 := strings.Split(u.Path, "/")
+	filename := slice1[len(slice1)-1]
+
+	return filename
+
+}
 
 func Usage() {
 	fmt.Fprintf(os.Stderr, "usage: crawl http://example.com/path/file.html\n")
@@ -204,12 +243,12 @@ func parseJSON(b string) {
 
 }
 
-func CollectLinksRadiolab(httpBody io.Reader) []string {
+func CollectLinksRadiolab(httpBody io.Reader) []Enclosure {
 	// http://golang-examples.tumblr.com/post/47426518779/parse-html
 
 	r, _ := regexp.Compile("\"http(s://|://).*mp3\"")
 
-	links := make([]string, 0)
+	links := make([]Enclosure, 0)
 	script_token := 0
 	page := html.NewTokenizer(httpBody)
 	for {
@@ -235,7 +274,7 @@ func CollectLinksRadiolab(httpBody io.Reader) []string {
 					link := r.FindString(strings.Trim(token.Data, "\t\n "))
 					link = strings.Replace(link, "\"", "", -1)
 					//fmt.Printf("-> %s\n",link)
-					links = append(links, link)
+					links = append(links, Enclosure{link, "0", "mp3"})
 				}
 			}
 		case html.EndTagToken: // </tag>
@@ -307,11 +346,14 @@ func main() {
 
 	defer resp.Body.Close()
 
-	//links := CollectLinksRadiolab(resp.Body)
-	links := CollectLinksATC(resp.Body)
+	links := CollectLinksRadiolab(resp.Body)
+	//links := CollectLinksATC(resp.Body)
+
+	t := template.New("Item Template").Funcs(funcMap)
+	t, _ = t.Parse(templ)
 
 	for _, link := range links { // 'for' + 'range' in Go is like .each in Ruby or
-		fmt.Println(string(link)) // an iterator in many other languages.
+		t.Execute(os.Stdout, link)
 	}
 
 }
