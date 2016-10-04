@@ -346,8 +346,12 @@ func main() {
 
 	defer resp.Body.Close()
 
+	links1 := CollectLinksATC(resp.Body)
 	links := CollectLinksRadiolab(resp.Body)
-	//links := CollectLinksATC(resp.Body)
+
+	fmt.Printf("%v\n", links1)
+	return
+
 
 	t := template.New("Item Template").Funcs(funcMap)
 	t, _ = t.Parse(templ)
