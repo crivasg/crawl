@@ -319,6 +319,23 @@ func test_atc_json(filename string) {
 
 }
 
+func initApp() *cli.App {
+
+	app := cli.NewApp()
+	app.Name = "crawl"
+	app.Version = "0.0.0"
+	app.Usage = "A command line client written in golang to scrape radiolab and all things considered website for mp3 files."
+
+	app.Commands = []cli.Command{
+		radiolabCommand(),
+		atcCommand(),
+		// Add more sub-commands ...
+	}
+
+	return app
+
+}
+
 func main() {
 
 	//test_atc_json("/Users/crivas/Desktop/atc.json")
