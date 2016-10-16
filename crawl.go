@@ -16,6 +16,7 @@ import (
 	"encoding/json"
 	"flag"
 	"fmt"
+	"github.com/urfave/cli"
 	"golang.org/x/net/html"
 	"io"
 	"io/ioutil" // 'ioutil' will help us print pages to the screen
@@ -351,7 +352,6 @@ func main() {
 
 	fmt.Printf("%v\n", links1)
 	return
-
 
 	t := template.New("Item Template").Funcs(funcMap)
 	t, _ = t.Parse(templ)
