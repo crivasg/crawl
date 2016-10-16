@@ -336,6 +336,26 @@ func initApp() *cli.App {
 
 }
 
+func radiolabCommand() cli.Command {
+	command := cli.Command{
+		Name:   "radiolab",
+		Usage:  "Grabs radiolab episodes from its website, http://radiolab.org",
+		Action: actionRadiolab,
+	}
+	return command
+
+}
+
+func atcCommand() cli.Command {
+	command := cli.Command{
+		Name:      "all-things-considered",
+		ShortName: "atc",
+		Usage:     "Grabs All things considered episodes from its website, http://www.npr.org/programs/all-things-considered/",
+		Action:    actionAtc,
+	}
+	return command
+}
+
 func main() {
 
 	//test_atc_json("/Users/crivas/Desktop/atc.json")
