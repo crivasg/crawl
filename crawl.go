@@ -346,6 +346,10 @@ func radiolabCommand() cli.Command {
 
 }
 
+func actionRadiolab(ctx *cli.Context) {
+	fmt.Printf("%s\n", "http://radiolab.org")
+}
+
 func atcCommand() cli.Command {
 	command := cli.Command{
 		Name:      "all-things-considered",
@@ -356,10 +360,16 @@ func atcCommand() cli.Command {
 	return command
 }
 
+func actionAtc(ctx *cli.Context) {
+	fmt.Printf("%s\n", "http://www.npr.org/programs/all-things-considered/")
+}
+
 func main() {
 
-	//test_atc_json("/Users/crivas/Desktop/atc.json")
-	//return
+	app := initApp()
+	app.Run(os.Args)
+
+	return
 
 	flag.Parse()
 	args := flag.Args()
