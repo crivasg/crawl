@@ -319,10 +319,82 @@ func test_atc_json(filename string) {
 
 }
 
+func initApp() *cli.App {
+
+	app := cli.NewApp()
+	app.Name = "crawl"
+	app.Version = "0.0.0"
+	app.Usage = "A command line client written in golang to scrape radiolab and all things considered website for mp3 files."
+
+	app.Commands = []cli.Command{
+		radiolabCommand(),
+		atcCommand(),
+		// Add more sub-commands ...
+	}
+
+	return app
+
+}
+
+func radiolabCommand() cli.Command {
+	command := cli.Command{
+		Name:   "radiolab",
+		Usage:  "Grabs radiolab episodes from its website, http://radiolab.org",
+		Action: actionRadiolab,
+	}
+	return command
+
+}
+
+func actionRadiolab(ctx *cli.Context) {
+
+	resp, err := http.Get("http://radiolab.org")
+	if err != nil {
+		return
+	}
+
+	defer resp.Body.Close()
+
+	links := CollectLinksRadiolab(resp.Body)
+	for _, link := range links { // 'for' + 'range' in Go is like .each in Ruby or
+		fmt.Printf("%s\n", link.URL)
+	}
+
+}
+
+func atcCommand() cli.Command {
+	command := cli.Command{
+		Name:      "all-things-considered",
+		ShortName: "atc",
+		Usage:     "Grabs All things considered episodes from its website, http://www.npr.org/programs/all-things-considered/",
+		Action:    actionAtc,
+	}
+	return command
+}
+
+func actionAtc(ctx *cli.Context) {
+	fmt.Printf("%s\n", "http://www.npr.org/programs/all-things-considered/")
+
+	resp, err := http.Get("http://www.npr.org/programs/all-things-considered/")
+	if err != nil {
+		return
+	}
+
+	defer resp.Body.Close()
+
+	links := CollectLinksATC(resp.Body)
+	for _, link := range links { // 'for' + 'range' in Go is like .each in Ruby or
+		fmt.Printf("%v\n", link)
+	}
+
+}
+
 func main() {
 
-	//test_atc_json("/Users/crivas/Desktop/atc.json")
-	//return
+	app := initApp()
+	app.Run(os.Args)
+
+	return
 
 	flag.Parse()
 	args := flag.Args()
