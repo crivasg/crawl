@@ -348,6 +348,16 @@ func radiolabCommand() cli.Command {
 
 func actionRadiolab(ctx *cli.Context) {
 	fmt.Printf("%s\n", "http://radiolab.org")
+	data, err := RetrieveDataFrom("http://radiolab.org")
+	if err != nil {
+		fmt.Printf("%v\n", err)
+	}
+
+	links := CollectLinksRadiolab(data)
+	for _, link := range links { // 'for' + 'range' in Go is like .each in Ruby or
+		fmt.Printf("%v\n", link)
+	}
+
 }
 
 func atcCommand() cli.Command {
