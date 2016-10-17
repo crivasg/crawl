@@ -107,10 +107,7 @@ type Enclosure struct {
 }
 
 func (i Enclosure) String() string {
-
-	return fmt.Sprintf("%s\n%s\n%s", i.URL, i.Length, i.Type)
-	//return fmt.Sprintf("%s", i.AudioUrl)
-
+	return fmt.Sprintf(" URL: %s\nLength: %s\nType: %s", i.URL, i.Length, i.Type)
 }
 
 //------------------------------FUNCTIONS-------------------------------------------------
