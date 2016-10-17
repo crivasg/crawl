@@ -260,6 +260,8 @@ func CollectLinksRadiolab(httpBody io.Reader) []Enclosure {
 		}
 		token := page.Token()
 
+		//fmt.Printf("%s\n", strings.Trim(token.Data, "\t\n "))
+
 		switch tokenType {
 		case html.StartTagToken: // <tag>
 			if token.DataAtom.String() == "script" {
@@ -347,15 +349,18 @@ func radiolabCommand() cli.Command {
 }
 
 func actionRadiolab(ctx *cli.Context) {
-	fmt.Printf("%s\n", "http://radiolab.org")
-	data, err := RetrieveDataFrom("http://radiolab.org")
+	//fmt.Printf("%s\n", "http://radiolab.org")
+
+	resp, err := http.Get("http://radiolab.org")
 	if err != nil {
-		fmt.Printf("%v\n", err)
+		return
 	}
 
-	links := CollectLinksRadiolab(data)
+	defer resp.Body.Close()
+
+	links := CollectLinksRadiolab(resp.Body)
 	for _, link := range links { // 'for' + 'range' in Go is like .each in Ruby or
-		fmt.Printf("%v\n", link)
+		fmt.Printf("%s\n", link.URL)
 	}
 
 }
