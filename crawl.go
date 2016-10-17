@@ -140,12 +140,6 @@ func basenameURL(i string) string {
 
 }
 
-func Usage() {
-	fmt.Fprintf(os.Stderr, "usage: crawl http://example.com/path/file.html\n")
-	flag.PrintDefaults()
-	os.Exit(2)
-}
-
 func CollectLinks(httpBody io.Reader) []string {
 
 	links := make([]string, 0)
