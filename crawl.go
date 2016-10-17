@@ -366,39 +366,4 @@ func main() {
 	app := initApp()
 	app.Run(os.Args)
 
-	return
-
-	flag.Parse()
-	args := flag.Args()
-
-	/*
-		data, err := RetrieveDataFrom(args[0])
-		if err != nil {
-			fmt.Fprintf(os.Stderr, "Error retrieving the data from %s\n", args[0])
-			os.Exit(1)
-		}
-		fmt.Println(data)
-
-	*/
-
-	resp, err := http.Get(args[0])
-	if err != nil {
-		os.Exit(2)
-	}
-
-	defer resp.Body.Close()
-
-	links1 := CollectLinksATC(resp.Body)
-	links := CollectLinksRadiolab(resp.Body)
-
-	fmt.Printf("%v\n", links1)
-	return
-
-	t := template.New("Item Template").Funcs(funcMap)
-	t, _ = t.Parse(templ)
-
-	for _, link := range links { // 'for' + 'range' in Go is like .each in Ruby or
-		t.Execute(os.Stdout, link)
-	}
-
 }
