@@ -16,9 +16,10 @@ import (
 	"encoding/json"
 	"flag"
 	"fmt"
+	"github.com/urfave/cli"
 	"golang.org/x/net/html"
 	"io"
-	"io/ioutil" // 'ioutil' will help us print pages to the screen
+	//"io/ioutil" // 'ioutil' will help us print pages to the screen
 	"net/http"
 	"net/url"
 	"os"
@@ -106,10 +107,7 @@ type Enclosure struct {
 }
 
 func (i Enclosure) String() string {
-
-	return fmt.Sprintf("%s\n%s\n%s", i.URL, i.Length, i.Type)
-	//return fmt.Sprintf("%s", i.AudioUrl)
-
+	return fmt.Sprintf(" URL: %s\nLength: %s\nType: %s", i.URL, i.Length, i.Type)
 }
 
 //------------------------------FUNCTIONS-------------------------------------------------
@@ -137,12 +135,6 @@ func basenameURL(i string) string {
 
 	return filename
 
-}
-
-func Usage() {
-	fmt.Fprintf(os.Stderr, "usage: crawl http://example.com/path/file.html\n")
-	flag.PrintDefaults()
-	os.Exit(2)
 }
 
 func CollectLinks(httpBody io.Reader) []string {
@@ -299,36 +291,86 @@ func RetrieveDataFrom(uri string) (io.Reader, error) {
 
 }
 
-func test_atc_json(filename string) {
-	//
-	b, _ := ioutil.ReadFile(filename)
-	//fmt.Printf("-> %s\n", b)
+func initApp() *cli.App {
 
-	program := new(Program)
-	reader := strings.NewReader(string(b))
+	app := cli.NewApp()
+	app.Name = "crawl"
+	app.Version = "0.0.0"
+	app.Usage = "A command line client written in golang to scrape radiolab and all things considered website for mp3 files."
 
-	err := json.NewDecoder(reader).Decode(program)
-	if err != nil {
-		fmt.Printf("%v\n\n\n", err)
+	app.Commands = []cli.Command{
+		radiolabCommand(),
+		atcCommand(),
+		// Add more sub-commands ...
 	}
 
-	for _, episode := range program.AudioData {
-		fmt.Printf("%s\n", episode)
+	return app
+
+}
+
+func radiolabCommand() cli.Command {
+	command := cli.Command{
+		Name:   "radiolab",
+		Usage:  "Grabs radiolab episodes from its website, http://radiolab.org",
+		Action: actionRadiolab,
+	}
+	return command
+
+}
+
+func actionRadiolab(ctx *cli.Context) {
+
+	resp, err := http.Get("http://radiolab.org")
+	if err != nil {
+		return
+	}
+
+	defer resp.Body.Close()
+
+	links := CollectLinksRadiolab(resp.Body)
+	for _, link := range links { // 'for' + 'range' in Go is like .each in Ruby or
+		fmt.Printf("%s\n", link.URL)
+	}
+
+}
+
+func atcCommand() cli.Command {
+	command := cli.Command{
+		Name:      "all-things-considered",
+		ShortName: "atc",
+		Usage:     "Grabs All things considered episodes from its website, http://www.npr.org/programs/all-things-considered/",
+		Action:    actionAtc,
+	}
+	return command
+}
+
+func actionAtc(ctx *cli.Context) {
+	fmt.Printf("%s\n", "http://www.npr.org/programs/all-things-considered/")
+
+	resp, err := http.Get("http://www.npr.org/programs/all-things-considered/")
+	if err != nil {
+		return
+	}
+
+	defer resp.Body.Close()
+
+	links := CollectLinksATC(resp.Body)
+	for _, link := range links { // 'for' + 'range' in Go is like .each in Ruby or
+		fmt.Printf("%v\n", link)
 	}
 
 }
 
 func main() {
 
-	//test_atc_json("/Users/crivas/Desktop/atc.json")
-	//return
+	app := initApp()
+	app.Run(os.Args)
+
+	return
 
 	flag.Parse()
 	args := flag.Args()
 
-	if len(args) < 1 {
-		Usage()
-	}
 	/*
 		data, err := RetrieveDataFrom(args[0])
 		if err != nil {
@@ -351,7 +393,6 @@ func main() {
 
 	fmt.Printf("%v\n", links1)
 	return
-
 
 	t := template.New("Item Template").Funcs(funcMap)
 	t, _ = t.Parse(templ)
