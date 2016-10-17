@@ -260,8 +260,6 @@ func CollectLinksRadiolab(httpBody io.Reader) []Enclosure {
 		}
 		token := page.Token()
 
-		//fmt.Printf("%s\n", strings.Trim(token.Data, "\t\n "))
-
 		switch tokenType {
 		case html.StartTagToken: // <tag>
 			if token.DataAtom.String() == "script" {
@@ -349,7 +347,6 @@ func radiolabCommand() cli.Command {
 }
 
 func actionRadiolab(ctx *cli.Context) {
-	//fmt.Printf("%s\n", "http://radiolab.org")
 
 	resp, err := http.Get("http://radiolab.org")
 	if err != nil {
