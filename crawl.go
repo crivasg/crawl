@@ -300,25 +300,6 @@ func RetrieveDataFrom(uri string) (io.Reader, error) {
 
 }
 
-func test_atc_json(filename string) {
-	//
-	b, _ := ioutil.ReadFile(filename)
-	//fmt.Printf("-> %s\n", b)
-
-	program := new(Program)
-	reader := strings.NewReader(string(b))
-
-	err := json.NewDecoder(reader).Decode(program)
-	if err != nil {
-		fmt.Printf("%v\n\n\n", err)
-	}
-
-	for _, episode := range program.AudioData {
-		fmt.Printf("%s\n", episode)
-	}
-
-}
-
 func initApp() *cli.App {
 
 	app := cli.NewApp()
