@@ -374,6 +374,19 @@ func atcCommand() cli.Command {
 
 func actionAtc(ctx *cli.Context) {
 	fmt.Printf("%s\n", "http://www.npr.org/programs/all-things-considered/")
+
+	resp, err := http.Get("http://www.npr.org/programs/all-things-considered/")
+	if err != nil {
+		return
+	}
+
+	defer resp.Body.Close()
+
+	links := CollectLinksATC(resp.Body)
+	for _, link := range links { // 'for' + 'range' in Go is like .each in Ruby or
+		fmt.Printf("%v\n", link)
+	}
+
 }
 
 func main() {
