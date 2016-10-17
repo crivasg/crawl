@@ -19,7 +19,7 @@ import (
 	"github.com/urfave/cli"
 	"golang.org/x/net/html"
 	"io"
-	"io/ioutil" // 'ioutil' will help us print pages to the screen
+	//"io/ioutil" // 'ioutil' will help us print pages to the screen
 	"net/http"
 	"net/url"
 	"os"
@@ -371,9 +371,6 @@ func main() {
 	flag.Parse()
 	args := flag.Args()
 
-	if len(args) < 1 {
-		Usage()
-	}
 	/*
 		data, err := RetrieveDataFrom(args[0])
 		if err != nil {
