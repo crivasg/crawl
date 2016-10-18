@@ -226,7 +226,7 @@ func parseJSON(b string) {
 	}
 
 	basename, _ := program.AudioData[0].Basename()
-	fmt.Printf("\n%v\n", basename)
+	//fmt.Printf("\n%v\n", basename)
 
 	for _, episode := range program.AudioData[1:] {
 		basename1, _ := episode.Basename()
