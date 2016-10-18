@@ -14,7 +14,6 @@ package main
 
 import (
 	"encoding/json"
-	"flag"
 	"fmt"
 	"github.com/urfave/cli"
 	"golang.org/x/net/html"
