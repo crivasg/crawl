@@ -238,7 +238,7 @@ func CollectLinksRadiolab(httpBody io.Reader) []Enclosure {
 	r, _ := regexp.Compile("\"http(s://|://).*mp3\"")
 
 	links := make([]Enclosure, 0)
-	script_token := 0
+	scriptToken := 0
 	page := html.NewTokenizer(httpBody)
 	for {
 		tokenType := page.Next()
@@ -252,11 +252,11 @@ func CollectLinksRadiolab(httpBody io.Reader) []Enclosure {
 		case html.StartTagToken: // <tag>
 			if token.DataAtom.String() == "script" {
 				//fmt.Printf("script = %v\n", token)
-				script_token = 1
+				scriptToken = 1
 				continue
 			}
 		case html.TextToken: // text between start and end tag
-			if script_token == 1 {
+			if scriptToken == 1 {
 				match, _ := regexp.MatchString("embed_audio_buttons", token.Data)
 				if match == true {
 					//fmt.Printf("%s\n", strings.Trim(token.Data, "\t\n "))
@@ -267,9 +267,9 @@ func CollectLinksRadiolab(httpBody io.Reader) []Enclosure {
 				}
 			}
 		case html.EndTagToken: // </tag>
-			script_token = 0
+			scriptToken = 0
 		case html.SelfClosingTagToken: // <tag/>
-			script_token = 0
+			scriptToken = 0
 		}
 	}
 
