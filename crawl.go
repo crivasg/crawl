@@ -205,8 +205,6 @@ func CollectLinksATC(httpBody io.Reader) []string {
 		}
 	}
 
-	return links
-
 }
 
 func parseJSON(b string) {
