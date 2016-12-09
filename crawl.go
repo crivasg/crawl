@@ -44,11 +44,11 @@ type Rss2 struct {
 }
 
 type Feed struct {
-	Id      string
-	title   string
-	Updated string
-	Links   []Link
-	Entries []Entry
+	Id      string  `xml:"id"`
+	Title   string  `xml:"title"`
+	Updated string  `xml:"updated"`
+	Links   []Link  `xml:"link"`
+	Entries []Entry `xml:"entry"`
 }
 
 type Entry struct {
