@@ -298,6 +298,7 @@ func initApp() *cli.App {
 	app.Commands = []cli.Command{
 		radiolabCommand(),
 		atcCommand(),
+		iTunesCommand(),
 		// Add more sub-commands ...
 	}
 
@@ -355,6 +356,26 @@ func actionAtc(ctx *cli.Context) {
 	for _, link := range links { // 'for' + 'range' in Go is like .each in Ruby or
 		fmt.Printf("%v\n", link)
 	}
+
+}
+
+func iTunesCommand() cli.Command {
+	command := cli.Command{
+		Name:   "itunes",
+		Usage:  "Query iTunes for top podcasts",
+		Action: actionItunes,
+	}
+	return command
+}
+
+func actionItunes(ctx *cli.Context) {
+
+	resp, err := http.Get("https://itunes.apple.com/us/rss/toppodcasts/limit=100/explicit=true/xml")
+	if err != nil {
+		return
+	}
+
+	defer resp.Body.Close()
 
 }
 
