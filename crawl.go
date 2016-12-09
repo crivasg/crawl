@@ -39,6 +39,33 @@ const templ = `wget -O {{basenameURL .URL}} {{cleanURL .URL}}
 
 //------------------------------MODELS----------------------------------------------------
 
+type Rss2 struct {
+	Feed Feed `xml:"feed"`
+}
+
+type Feed struct {
+	Id      string
+	title   string
+	Updated string
+	Links   []Link
+	Entries []Entry
+}
+
+type Entry struct {
+	Updated string `xml:"updated"`
+	Id      string `xml:"id"`
+	Title   string `xml:"title"`
+	Summary string `xml:"summary"`
+	Link    Link   `xml:"link"`
+	Content string `xml:"content"`
+}
+
+type Link struct {
+	Rel  string `xml:"rel,attr"`
+	Type string `xml:"type,attr"`
+	Href string `xml:"href,attr"`
+}
+
 type Program struct {
 	Type      string      `json:"type"`
 	Full      []string    `json:"full"`
