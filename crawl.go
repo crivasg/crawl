@@ -14,10 +14,12 @@ package main
 
 import (
 	"encoding/json"
+	"encoding/xml"
 	"fmt"
 	"github.com/urfave/cli"
 	"golang.org/x/net/html"
 	"io"
+	"io/ioutil"
 	//"io/ioutil" // 'ioutil' will help us print pages to the screen
 	"net/http"
 	"net/url"
@@ -402,7 +404,25 @@ func actionItunes(ctx *cli.Context) {
 		return
 	}
 
+	if resp.StatusCode != http.StatusOK {
+		return
+	}
+
 	defer resp.Body.Close()
+
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return
+	}
+	var feed Feed
+	err = xml.Unmarshal(body, &feed)
+	if err != nil {
+		return
+	}
+
+	for _, entry := range feed.Entries {
+			fmt.Printf("- %s\n%s\n%s\n\n", entry.Title, entry.Summary, entry.Link.Href)
+	}
 
 }
 
