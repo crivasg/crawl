@@ -421,8 +421,10 @@ func actionItunes(ctx *cli.Context) {
 		return
 	}
 
+	fmt.Printf("# %s\n\n", feed.Title)
+
 	for _, entry := range feed.Entries {
-			fmt.Printf("- %s\n%s\n%s\n\n", entry.Title, entry.Summary, entry.Link.Href)
+		fmt.Printf("- %s\n%s\n%s\n\n", entry.Title, entry.Summary, entry.Link.Href)
 	}
 
 }
