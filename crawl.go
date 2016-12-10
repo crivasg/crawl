@@ -50,6 +50,7 @@ type Feed struct {
 	Title   string  `xml:"title"`
 	Updated string  `xml:"updated"`
 	Links   []Link  `xml:"link"`
+	Icon    string  `xml:"icon"`
 	Entries []Entry `xml:"entry"`
 }
 
