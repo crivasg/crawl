@@ -20,11 +20,11 @@ import (
 	"golang.org/x/net/html"
 	"io"
 	"io/ioutil"
-	//"io/ioutil" // 'ioutil' will help us print pages to the screen
 	"net/http"
 	"net/url"
 	"os"
 	"regexp"
+	"strconv"
 	"strings"
 	"text/template"
 )
@@ -400,7 +400,14 @@ func iTunesCommand() cli.Command {
 
 func actionItunes(ctx *cli.Context) {
 
-	resp, err := http.Get("https://itunes.apple.com/us/rss/toppodcasts/limit=100/explicit=true/xml")
+	size := 10
+	if ctx.NArg() > 0 {
+		tmp, _ := strconv.Atoi(ctx.Args()[0])
+		size = tmp
+	}
+
+	URL := fmt.Sprintf("https://itunes.apple.com/us/rss/toppodcasts/limit=%d/explicit=true/xml", size)
+	resp, err := http.Get(URL)
 	if err != nil {
 		return
 	}
