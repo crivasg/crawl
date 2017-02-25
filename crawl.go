@@ -329,6 +329,7 @@ func initApp() *cli.App {
 		radiolabCommand(),
 		atcCommand(),
 		iTunesCommand(),
+		podcastCommand(),
 		// Add more sub-commands ...
 	}
 
