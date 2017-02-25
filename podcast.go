@@ -1,3 +1,6 @@
+// Usage ./crawl podcast --feed http://feeds.wnyc.org/onthemedia
+// Usage ./crawl podcast -f http://feeds.wnyc.org/onthemedia
+
 package main
 
 import (
@@ -42,9 +45,16 @@ type Encl struct {
 func podcastCommand() cli.Command {
 
 	command := cli.Command{
-		Name:   "podcast",
-		Usage:  "Grabs podcast episodes",
-		Action: actionPodcast,
+		Name:    "podcast",
+		Aliases: []string{"p"},
+		Usage:   "Grabs podcast episodes",
+		Action:  actionPodcast,
+		Flags: []cli.Flag{
+			cli.StringFlag{
+				Name:  "feed, f",
+				Usage: "The `URL` to be parsed",
+			},
+		},
 	}
 	return command
 
@@ -52,13 +62,18 @@ func podcastCommand() cli.Command {
 
 func actionPodcast(ctx *cli.Context) {
 
-	channel, _ := getPodcastData("http://feeds.propublica.org/propublica/podcast")
+	feed := ctx.String("feed")
 
-	for _, item := range channel.Items {
-		fmt.Printf("# %s\n%s\n", item.Title, item.Description)
-		for _, encl := range item.Encl {
-			fmt.Printf("%s\n", encl.Url)
+	if len(feed) > 0 {
+		channel, _ := getPodcastData(feed)
+
+		for _, item := range channel.Items {
+			fmt.Printf("# %s\n%s\n", item.Title, item.Description)
+			for _, encl := range item.Encl {
+				fmt.Printf("%s\n", encl.Url)
+			}
 		}
+
 	}
 
 }
