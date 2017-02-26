@@ -9,6 +9,7 @@ import (
 	"github.com/urfave/cli"
 	"io/ioutil"
 	"net/http"
+	"strings"
 )
 
 type FeedRSS struct {
@@ -68,7 +69,7 @@ func actionPodcast(ctx *cli.Context) {
 		channel, _ := getPodcastData(feed)
 
 		for _, item := range channel.Items {
-			fmt.Printf("# %s\n%s\n", item.Title, item.Description)
+			fmt.Printf("#%s > %s\n", strings.Trim(item.Title, " \n"), item.PubDate)
 			for _, encl := range item.Encl {
 				fmt.Printf("%s\n", encl.Url)
 			}
